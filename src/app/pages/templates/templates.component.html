@@ -1,0 +1,43 @@
+<h2>Create Checklist</h2>
+
+<div class="layout">
+  <div class="sidebar">
+    <h3>Existing</h3>
+    <ul>
+      <li *ngFor="let t of templates" (click)="edit(t)">
+        <span>{{ t.name }} <span class="muted">({{ t.questions.length }} questions)</span></span>
+        <button class="btn" (click)="remove(t); $event.stopPropagation();">Delete</button>
+      </li>
+    </ul>
+  </div>
+
+  <div>
+    <h3>{{ editId ? 'Edit Checklist' : 'Create Checklist' }}</h3>
+    <form class="form-card form-grid" [formGroup]="form" (ngSubmit)="save()">
+      <div class="form-field">
+        <label>Name</label>
+        <input formControlName="name" required />
+      </div>
+      <div class="form-field">
+        <label>Description</label>
+        <textarea formControlName="description"></textarea>
+      </div>
+
+      <div>
+        <strong>Questions</strong>
+        <div formArrayName="questions" class="questions">
+          <div *ngFor="let q of questions.controls; let i = index" [formGroupName]="i" class="question-row">
+            <input formControlName="text" placeholder="Question text" />
+            <button type="button" class="btn" (click)="removeQuestion(i)">Remove</button>
+          </div>
+        </div>
+        <button type="button" class="btn" (click)="addQuestion()">+ Add Question</button>
+      </div>
+
+      <div>
+        <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Save Checklist</button>
+        <button class="btn" type="button" (click)="resetWithConfirm()">Reset</button>
+      </div>
+    </form>
+  </div>
+</div>

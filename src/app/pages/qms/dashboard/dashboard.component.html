@@ -1,0 +1,51 @@
+<div class="page-wrap">
+  <div class="page-head">
+    <h2>Executive Dashboard</h2>
+    <p>ISO 9001 compliance and performance overview across your organization.</p>
+  </div>
+
+  <div class="metrics-grid">
+    <mat-card *ngFor="let card of metrics" class="metric-card" [class]="card.status">
+      <mat-card-content>
+        <div class="metric-title">{{ card.title }}</div>
+        <div class="metric-value">{{ card.value }}</div>
+        <div class="metric-trend">{{ card.trend }}</div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="two-col">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Compliance Status</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="bar-row">
+          <span>Document approval</span>
+          <mat-progress-bar mode="determinate" value="88"></mat-progress-bar>
+        </div>
+        <div class="bar-row">
+          <span>Audit closure</span>
+          <mat-progress-bar mode="determinate" value="76"></mat-progress-bar>
+        </div>
+        <div class="bar-row">
+          <span>Training validity</span>
+          <mat-progress-bar mode="determinate" value="92"></mat-progress-bar>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Upcoming Events</mat-card-title>
+      </mat-card-header>
+      <mat-list>
+        <mat-list-item *ngFor="let item of upcoming">
+          <mat-icon matListItemIcon>event</mat-icon>
+          <div matListItemTitle>{{ item.name }}</div>
+          <div matListItemLine>{{ item.type }} • Due {{ item.due }}</div>
+        </mat-list-item>
+      </mat-list>
+    </mat-card>
+  </div>
+</div>

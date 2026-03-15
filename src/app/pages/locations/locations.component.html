@@ -1,0 +1,20 @@
+<h2>Locations</h2>
+<p class="muted">Create and manage locations for your inspections.</p>
+
+<form class="form-grid" (ngSubmit)="save()" [formGroup]="form">
+  <label class="form-field">Location name
+    <input formControlName="name" placeholder="e.g., Main Warehouse" required />
+  </label>
+  <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Add</button>
+</form>
+
+<ul class="locations-list" *ngIf="locations.length; else empty">
+  <li *ngFor="let l of locations">
+    <span class="loc-name">{{ l.name }}</span>
+    <button class="btn" (click)="remove(l)">Delete</button>
+  </li>
+  </ul>
+
+<ng-template #empty>
+  <div class="muted">No locations yet. Add your first one above.</div>
+</ng-template>

@@ -1,0 +1,5 @@
+.page-wrap { display: grid; gap: 1rem; }
+.page-head h2 { margin: 0; }
+.page-head p { margin: .25rem 0 0; color: #64748b; }
+.settings-form { display: grid; gap: .75rem; grid-template-columns: repeat(2, minmax(180px, 1fr)); }
+@media (max-width: 960px) { .settings-form { grid-template-columns: 1fr; } }

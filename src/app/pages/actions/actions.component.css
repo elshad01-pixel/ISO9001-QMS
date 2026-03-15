@@ -1,0 +1,66 @@
+/* Actions table tweaks */
+table.table select,
+table.table input[type="text"],
+table.table input[type="date"] {
+  width: 100%;
+}
+
+/* Filters bar */
+.filters {
+  display: flex;
+  gap: .5rem;
+  align-items: end;
+  margin: .5rem 0 .75rem;
+}
+.filters label { display: grid; gap: .25rem; }
+.filters .grow { flex: 1 1 auto; }
+
+/* Minimal modal styling reused from inspection modal for consistency */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.25);
+}
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  width: min(560px, 92vw);
+  padding: 1rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,.15);
+}
+.modal h3 { margin: 0 0 .5rem; }
+.modal .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+.modal .form-field { display: grid; gap: .25rem; }
+.modal .col-span-2 { grid-column: 1 / -1; }
+.modal .modal-actions { display: flex; justify-content: flex-end; gap: .5rem; margin-top: .25rem; }
+.evidence-preview img { max-width: 240px; border-radius: 6px; border: 1px solid var(--border); }
+
+/* Status pill colors */
+/* Replace pill with colored dropdown styles */
+.status-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: .4rem .5rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+}
+.status-select.orange { background: #fff7ed; color: #9a3412; border-color: #fed7aa; }
+.status-select.blue   { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+.status-select.green  { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
+.status-select.red    { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
+
+/* Make problem look like plain text but clickable on double-click */
+.problem-cell { cursor: pointer; text-decoration: none; color: inherit; }
+
+/* Tidy up table spacing */
+table.table th, table.table td {
+  vertical-align: top;
+}

@@ -1,0 +1,29 @@
+.page-wrap { display: grid; gap: 1rem; }
+.page-head h2 { margin: 0; }
+.page-head p { margin: .25rem 0 0; color: #64748b; }
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap: .75rem;
+}
+.metric-card { border-left: 4px solid #64748b; }
+.metric-card.good { border-color: #16a34a; }
+.metric-card.warn { border-color: #f59e0b; }
+.metric-card.critical { border-color: #ef4444; }
+.metric-title { color: #64748b; font-size: .85rem; }
+.metric-value { font-size: 1.8rem; font-weight: 700; margin: .25rem 0; }
+.metric-trend { font-size: .8rem; color: #475569; }
+
+.two-col {
+  display: grid;
+  gap: .75rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+.bar-row { display: grid; gap: .4rem; margin-bottom: .8rem; }
+
+@media (max-width: 960px) {
+  .metrics-grid { grid-template-columns: 1fr 1fr; }
+  .two-col { grid-template-columns: 1fr; }
+}

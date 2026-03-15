@@ -1,0 +1,6 @@
+.page-wrap { display: grid; gap: 1rem; }
+.page-head h2 { margin: 0; }
+.page-head p { margin: .25rem 0 0; color: #64748b; }
+.doc-form { display: grid; gap: .75rem; grid-template-columns: repeat(4, minmax(140px, 1fr)); align-items: end; }
+.full-width { width: 100%; }
+@media (max-width: 960px) { .doc-form { grid-template-columns: 1fr; } }

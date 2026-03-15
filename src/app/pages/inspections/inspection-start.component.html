@@ -1,0 +1,43 @@
+<h2>Start Inspection</h2>
+
+<form class="form-card form-grid" [formGroup]="form" (ngSubmit)="start()">
+  <label class="form-field">Select the Checklist
+    <select formControlName="templateId" required>
+      <option value="">-- select template --</option>
+      <option *ngFor="let t of templates" [value]="t.id">{{ t.name }}</option>
+    </select>
+  </label>
+  <label class="form-field">Location
+    <ng-container *ngIf="locations.length; else freeText">
+      <select formControlName="location" required>
+        <option value="">-- select location --</option>
+        <option *ngFor="let l of locations" [value]="l.name">{{ l.name }}</option>
+      </select>
+      <div class="muted small">Manage in <a routerLink="/locations">Locations</a></div>
+    </ng-container>
+    <ng-template #freeText>
+      <input formControlName="location" required placeholder="Enter location" />
+      <div class="muted small">Tip: Add reusable locations in <a routerLink="/locations">Locations</a></div>
+    </ng-template>
+  </label>
+  <label class="form-field">Inspector
+    <ng-container *ngIf="users?.length; else freeInspector">
+      <select formControlName="inspectorName" required>
+        <option value="">-- select inspector --</option>
+        <option *ngFor="let u of users" [value]="u.name || u.email">{{ u.name || u.email }}</option>
+      </select>
+      <div class="muted small">Manage in <a routerLink="/users">Users</a></div>
+    </ng-container>
+    <ng-template #freeInspector>
+      <input formControlName="inspectorName" required placeholder="Enter inspector name" />
+      <div class="muted small">Tip: Create users in <a routerLink="/users">Users</a></div>
+    </ng-template>
+  </label>
+  <label class="form-field">Date
+    <input type="date" formControlName="date" required />
+  </label>
+  <label class="form-field">Division
+    <input formControlName="division" required />
+  </label>
+  <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Start</button>
+</form>

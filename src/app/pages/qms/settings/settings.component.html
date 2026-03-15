@@ -1,0 +1,34 @@
+<div class="page-wrap">
+  <div class="page-head">
+    <h2>Settings</h2>
+    <p>Configure organization-level QMS defaults.</p>
+  </div>
+
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="form" class="settings-form" (ngSubmit)="save()">
+        <mat-form-field appearance="outline">
+          <mat-label>Company name</mat-label>
+          <input matInput formControlName="companyName" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Timezone</mat-label>
+          <input matInput formControlName="timezone" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Risk scoring method</mat-label>
+          <input matInput formControlName="riskMethod" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Document prefix</mat-label>
+          <input matInput formControlName="documentPrefix" />
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" type="submit">Save Settings</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

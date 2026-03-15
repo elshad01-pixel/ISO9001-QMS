@@ -1,0 +1,122 @@
+<div *ngIf="action as a; else notFound">
+  <div class="header">
+    <button class="btn" (click)="backToList()">← Back</button>
+    <h2>Action Details <span class="muted">• {{ a.actionCode || (a.id | slice:0:8) }}</span></h2>
+  </div>
+
+  <div class="meta-grid">
+    <div>
+      <div class="label">Location</div>
+      <div>{{ a.location }}</div>
+    </div>
+    <div>
+      <div class="label">Inspection date</div>
+      <div>{{ inspection?.mandatory?.date || '—' }}</div>
+    </div>
+    <div>
+      <div class="label">Inspector</div>
+      <div>{{ inspection?.mandatory?.inspectorName || '—' }}</div>
+    </div>
+    <div>
+      <div class="label">Checklist</div>
+      <div>{{ templateName }}</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Linked Checklist Item</h3>
+    <div class="block">
+      <div class="label">Question</div>
+      <div>{{ a.problem }}</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Non-Conformity</h3>
+    <div class="block">
+      <div class="label">Description</div>
+      <div>{{ a.ncDescription || '—' }}</div>
+    </div>
+    <div class="block">
+      <div class="label">Recommended Action</div>
+      <div>{{ a.recommendedAction || a.actionToTake || '—' }}</div>
+    </div>
+    <div class="block">
+      <div class="label">Attachments from inspection</div>
+      <div *ngIf="a.attachmentsFromInspection?.length; else noInspAtts" class="att-grid">
+        <div class="att" *ngFor="let att of a.attachmentsFromInspection">
+          <ng-container *ngIf="isImage(att); else fileTpl">
+            <a [href]="att.dataUrl" [download]="att.name" title="Download image">
+              <img [src]="att.dataUrl" [alt]="att.name" />
+            </a>
+            <div class="name">{{ att.name }}</div>
+            <a class="small" [href]="att.dataUrl" [download]="att.name">Download</a>
+          </ng-container>
+          <ng-template #fileTpl>
+            <a [href]="att.dataUrl" [download]="att.name">📄 {{ att.name }}</a>
+          </ng-template>
+        </div>
+      </div>
+      <ng-template #noInspAtts><div class="muted">No attachments</div></ng-template>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>What was done to correct the non-conformity</h3>
+    <div class="form-grid">
+      <label class="form-field">Status
+        <select [(ngModel)]="draft.status" name="status">
+          <option value="pending">Open</option>
+          <option value="in-progress">In progress</option>
+          <option value="done">Complete</option>
+        </select>
+      </label>
+      <label class="form-field col-span-2">Corrective action performed
+        <textarea rows="4" [(ngModel)]="draft.resolvedDescription" name="resolved" placeholder="Describe what was done..."></textarea>
+      </label>
+      <label class="form-field">Completion date
+        <input type="date" [(ngModel)]="draft.completedAt" name="completedAt" />
+      </label>
+      <label class="form-field">Responsible person
+        <ng-container *ngIf="users?.length; else freePerson">
+          <select [(ngModel)]="draft.responsiblePerson" name="responsible">
+            <option value="">-- select --</option>
+            <option *ngFor="let u of users" [value]="u.name || u.email">{{ u.name || u.email }}</option>
+          </select>
+        </ng-container>
+        <ng-template #freePerson>
+          <input [(ngModel)]="draft.responsiblePerson" name="responsible" placeholder="Full name" />
+        </ng-template>
+      </label>
+      <label class="form-field col-span-2">Add evidence (photos/documents)
+        <input type="file" multiple (change)="onAddEvidence($event)" />
+      </label>
+      <div class="col-span-2" *ngIf="draft.evidenceAttachments?.length">
+        <div class="att-grid">
+          <div class="att" *ngFor="let att of draft.evidenceAttachments; let i = index">
+            <ng-container *ngIf="isImage(att); else fileTpl2">
+              <a [href]="att.dataUrl" [download]="att.name" title="Download image">
+                <img [src]="att.dataUrl" [alt]="att.name" />
+              </a>
+              <div class="name">{{ att.name }}</div>
+              <a class="small" [href]="att.dataUrl" [download]="att.name">Download</a>
+            </ng-container>
+            <ng-template #fileTpl2>
+              <a [href]="att.dataUrl" [download]="att.name">📄 {{ att.name }}</a>
+            </ng-template>
+            <button class="btn small" type="button" (click)="removeEvidence(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" type="button" (click)="save()">Save</button>
+    </div>
+  </div>
+</div>
+
+<ng-template #notFound>
+  <p>Action not found.</p>
+  <a class="btn" routerLink="/actions">Back to Actions</a>
+</ng-template>

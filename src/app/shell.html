@@ -1,0 +1,52 @@
+<div *ngIf="!isAuthPage(); else authOnly" class="app-shell">
+  <aside class="sidebar" [class.pinned]="sidebarPinned()">
+    <div class="sidebar-header">
+      <div class="brand-row">
+        <div class="brand-mark">Q</div>
+        <div class="brand-text">
+          <strong class="brand">{{ title() }}</strong>
+          <span class="muted small">Multi-tenant SaaS</span>
+        </div>
+        <button type="button" class="pin-btn" [class.active]="sidebarPinned()" (click)="toggleSidebarPin()">📌</button>
+      </div>
+      <nav class="side-nav" aria-label="Main navigation">
+        <a *ngFor="let item of navigation" [routerLink]="item.route" routerLinkActive="active" class="nav-item">
+          <mat-icon class="icon">{{ item.icon }}</mat-icon>
+          <span>{{ item.label }}</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="avatar">QA</div>
+        <div class="user-meta">
+          <div class="user-name">Quality Admin</div>
+          <div class="muted small">Organization Admin</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-area">
+    <header class="topbar">
+      <div>
+        <div class="top-title">{{ pageTitle() }}</div>
+        <div class="muted small">ISO 9001:2015 Quality Management Platform</div>
+      </div>
+      <button mat-flat-button color="primary" routerLink="/documents">New Record</button>
+    </header>
+
+    <section class="content">
+      <router-outlet></router-outlet>
+    </section>
+
+    <footer class="app-footer">
+      eAudit QMS • Tenant-safe • Audit-ready traceability
+    </footer>
+  </main>
+</div>
+
+<ng-template #authOnly>
+  <router-outlet></router-outlet>
+</ng-template>

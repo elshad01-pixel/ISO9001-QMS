@@ -1,0 +1,95 @@
+<h2>Actions</h2>
+
+<!-- Filters -->
+<div class="filters">
+  <label>
+    <span>Status</span>
+    <select [(ngModel)]="filter.status" name="statusFilter">
+      <option value="all">All</option>
+      <option value="pending">Open</option>
+      <option value="in-progress">In progress</option>
+      <option value="done">Complete</option>
+      <option value="overdue">Overdue</option>
+    </select>
+  </label>
+  <label class="grow">
+    <span>Search</span>
+    <input [(ngModel)]="filter.q" name="query" placeholder="Search problem, action, location, assignee or ID" />
+  </label>
+</div>
+
+<div *ngIf="actions.length === 0" class="muted">No actions yet.</div>
+
+<table class="table" *ngIf="filteredActions.length">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Problem</th>
+    <th>Action</th>
+    <th>Status</th>
+    <th>Assignee</th>
+    <th>Due</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let a of filteredActions">
+    <td>{{ a.actionCode || (a.id | slice:0:8) }}</td>
+    <td><a class="problem-cell" [routerLink]="['/actions', a.id]" title="Open full details">{{ a.problem }}</a></td>
+    <td>{{ a.actionToTake }}</td>
+    <td>
+      <select
+        class="status-select"
+        [ngClass]="statusClass(a)"
+        [ngModel]="a.status"
+        (ngModelChange)="updateStatus(a, $event)">
+        <option value="pending">Open</option>
+        <option value="in-progress">In progress</option>
+        <option value="done">Complete</option>
+      </select>
+    </td>
+    <td>
+      <input [ngModel]="a.assignee" (ngModelChange)="updateAssignee(a, $event)" />
+    </td>
+    <td>
+      <input type="date" [ngModel]="a.dueDate" (ngModelChange)="updateDue(a, $event)" />
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<div *ngIf="actions.length && !filteredActions.length" class="muted">No actions match your filters.</div>
+
+<!-- Details modal -->
+<div class="modal-backdrop" *ngIf="detailsOpen" (click)="closeDetails()"></div>
+<div class="modal" *ngIf="detailsOpen" role="dialog" aria-modal="true">
+  <h3>Action Details <span class="muted" *ngIf="current">• {{ current.actionCode || (current.id | slice:0:8) }}</span></h3>
+  <div class="form-grid">
+    <label class="form-field">Status
+      <select class="status-select" [ngClass]="draft.status === 'done' ? 'green' : (draft.status === 'in-progress' ? 'blue' : 'orange')" [(ngModel)]="draft.status" name="status">
+        <option value="pending">Open</option>
+        <option value="in-progress">In progress</option>
+        <option value="done">Complete</option>
+      </select>
+    </label>
+    <div class="muted small">Describe what corrective action was done and optionally attach evidence.</div>
+    <label class="form-field col-span-2">Problem description
+      <input [(ngModel)]="draft.problem" name="problem" />
+    </label>
+    <label class="form-field col-span-2">Corrective action done
+      <textarea rows="4" [(ngModel)]="draft.resolvedDescription" name="resolved" placeholder="Describe what was done to correct the issue..."></textarea>
+    </label>
+    <label class="form-field col-span-2">Attach evidence
+      <input type="file" accept="image/*" (change)="onEvidenceSelected($event)" />
+    </label>
+    <div class="evidence-preview col-span-2" *ngIf="draft.evidenceDataUrl">
+      <img [src]="draft.evidenceDataUrl" alt="evidence" />
+      <div class="muted small"><a [href]="draft.evidenceDataUrl" download="evidence">Download image</a></div>
+    </div>
+    <div class="modal-actions col-span-2">
+      <button class="btn" type="button" (click)="closeDetails()">Cancel</button>
+      <button class="btn btn-primary" type="button" (click)="saveDetails()">Save</button>
+    </div>
+  </div>
+  <div class="muted small" *ngIf="current">Linked to inspection • {{ current.location }}</div>
+  <div class="muted small" *ngIf="current?.problem">Problem: {{ current?.problem }}</div>
+</div>

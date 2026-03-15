@@ -1,0 +1,28 @@
+<h2>Inspection Planner</h2>
+<p class="muted">All scheduled inspections. Use Start Inspection to add new; click Open to continue.</p>
+
+<div *ngIf="!inspections.length" class="muted">No inspections yet. <a routerLink="/inspections/start">Schedule one</a>.</div>
+
+<table class="table" *ngIf="inspections.length">
+  <thead>
+  <tr>
+    <th>Date</th>
+    <th>Location</th>
+    <th>Inspector</th>
+    <th>Checklist</th>
+    <th>Status</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let i of inspections">
+      <td>{{ i.mandatory.date }}</td>
+      <td>{{ i.mandatory.location }}</td>
+      <td>{{ i.mandatory.inspectorName }}</td>
+      <td>{{ (domain.getTemplate(i.templateId)?.name) || '—' }}</td>
+      <td>{{ i.status }}</td>
+      <td><button class="btn" (click)="open(i)">Open</button></td>
+    </tr>
+  </tbody>
+
+</table>

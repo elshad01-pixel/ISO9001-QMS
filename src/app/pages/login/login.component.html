@@ -1,0 +1,31 @@
+<div class="login-page">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>ISO 9001 QMS Login</mat-card-title>
+      <mat-card-subtitle>Access your organization workspace</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" />
+          <mat-error *ngIf="form.controls.email.hasError('required')">Email is required.</mat-error>
+          <mat-error *ngIf="form.controls.email.hasError('email')">Enter a valid email.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" />
+          <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="form.controls.password.hasError('required')">Password is required.</mat-error>
+          <mat-error *ngIf="form.controls.password.hasError('minlength')">Minimum 8 characters.</mat-error>
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" type="submit" [disabled]="submitting">Sign in</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

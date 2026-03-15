@@ -1,0 +1,49 @@
+<h2>Users</h2>
+<p class="muted">Create and manage users. Fields are optional; mark users active to appear in dropdowns.</p>
+
+<form class="form-card form-grid" (ngSubmit)="save()" [formGroup]="form">
+  <label class="form-field">Name
+    <input formControlName="name" placeholder="Full name" />
+  </label>
+  <label class="form-field">Position
+    <input formControlName="position" />
+  </label>
+  <label class="form-field">Email
+    <input formControlName="email" type="email" />
+  </label>
+  <label class="form-field">Division
+    <input formControlName="division" />
+  </label>
+  <button class="btn btn-primary" type="submit">Create User</button>
+</form>
+
+<table class="table" *ngIf="users.length; else empty">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Position</th>
+    <th>Email</th>
+    <th>Division</th>
+    <th>Status</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let u of users">
+    <td>{{ u.name || '—' }}</td>
+    <td>{{ u.position || '—' }}</td>
+    <td>{{ u.email || '—' }}</td>
+    <td>{{ u.division || '—' }}</td>
+    <td>
+      <button class="btn" type="button" (click)="toggleActive(u)">{{ u.active ? 'Active' : 'Inactive' }}</button>
+    </td>
+    <td>
+      <button class="btn" type="button" (click)="remove(u)">Delete</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<ng-template #empty>
+  <div class="muted">No users yet. Add your first user above.</div>
+</ng-template>

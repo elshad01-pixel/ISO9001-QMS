@@ -1,0 +1,90 @@
+<ng-container *ngIf="inspection && template; else notFound">
+  <h2>Run Inspection</h2>
+  <div class="muted meta">
+    <div><strong>Template:</strong> {{ template.name }}</div>
+    <div><strong>Location:</strong> {{ inspection.mandatory.location }}</div>
+    <div><strong>Inspector:</strong> {{ inspection.mandatory.inspectorName }}</div>
+    <div><strong>Date:</strong> {{ inspection.mandatory.date }}</div>
+    <div><strong>Division:</strong> {{ inspection.mandatory.division }}</div>
+  </div>
+
+  <div *ngFor="let q of template.questions; let i = index" class="question-card">
+    <div class="question-title">Q{{ i + 1 }}. {{ q.text }}</div>
+    <div class="choices">
+      <label><input type="radio" name="ans{{q.id}}" [checked]="answer(q.id) === 'Yes'" (change)="setAnswer(q.id, 'Yes')"/> Yes</label>
+      <label><input type="radio" name="ans{{q.id}}" [checked]="answer(q.id) === 'No'" (change)="setAnswer(q.id, 'No')"/> No</label>
+      <label><input type="radio" name="ans{{q.id}}" [checked]="answer(q.id) === 'N/A'" (change)="setAnswer(q.id, 'N/A')"/> N/A</label>
+    </div>
+    <div class="action-row" *ngIf="answer(q.id) === 'No'">
+      <button class="btn btn-warning" (click)="openActionModal(q.id)">New Action</button>
+      <span class="muted small" *ngIf="findAnswer(q.id)?.actionId">Linked to action: {{ findAnswer(q.id)?.actionId }}</span>
+    </div>
+    <div class="comment-row">
+      <input [value]="comment(q.id)" (input)="updateComment(q.id, $any($event.target).value)" placeholder="Comment (optional)" />
+      <input type="file" accept="image/*" (change)="onPhotoSelected(q.id, $event)" />
+    </div>
+    <div *ngIf="photo(q.id)" class="photo-preview">
+      <img [src]="photo(q.id)" alt="photo" />
+    </div>
+  </div>
+
+  <div class="meta">
+    <button class="btn btn-primary" (click)="submit()" [disabled]="!allAnswered()">Submit Inspection</button>
+  </div>
+
+  <!-- Action modal -->
+  <div class="modal-backdrop" *ngIf="actionModalOpen" (click)="closeActionModal()"></div>
+  <div class="modal" *ngIf="actionModalOpen" role="dialog" aria-modal="true">
+    <h3>New Action</h3>
+    <div class="form-grid">
+      <label class="form-field">Responsible person
+        <ng-container *ngIf="users?.length; else freeAssignee">
+          <select [(ngModel)]="actionDraft.assignee" name="assignee">
+            <option value="">-- select user --</option>
+            <option *ngFor="let u of users" [value]="u.name || u.email">{{ u.name || u.email }}</option>
+          </select>
+        </ng-container>
+        <ng-template #freeAssignee>
+          <input [(ngModel)]="actionDraft.assignee" name="assignee" placeholder="Full name" />
+        </ng-template>
+      </label>
+      <label class="form-field">Due date
+        <input type="date" [(ngModel)]="actionDraft.dueDate" name="due" />
+      </label>
+      <label class="form-field col-span-2">Non-Conformity Description
+        <textarea [(ngModel)]="actionDraft.description" name="desc" rows="3" placeholder="Describe the non-conformity..."></textarea>
+      </label>
+      <label class="form-field col-span-2">Recommended Action Description
+        <textarea [(ngModel)]="actionDraft.recommended" name="reco" rows="3" placeholder="Describe the recommended corrective action..."></textarea>
+      </label>
+      <label class="form-field col-span-2">Attachments (images/files)
+        <input type="file" multiple (change)="onActionPhotoSelected($event)" />
+        <div class="muted small">You can add images and documents as evidence.</div>
+      </label>
+      <div class="col-span-2" *ngIf="actionDraft.attachments?.length">
+        <div class="muted small">Selected attachments:</div>
+        <ul class="att-list">
+          <li *ngFor="let att of actionDraft.attachments">
+            <ng-container *ngIf="att.type.startsWith('image/'); else fileItem">
+              <img [src]="att.dataUrl" [alt]="att.name" />
+              <span class="small">{{ att.name }}</span>
+            </ng-container>
+            <ng-template #fileItem>
+              <span>📄 {{ att.name }}</span>
+            </ng-template>
+          </li>
+        </ul>
+      </div>
+      <div class="modal-actions col-span-2">
+        <button class="btn" type="button" (click)="closeActionModal()">Cancel</button>
+        <button class="btn btn-primary" type="button" [disabled]="!canSaveAction()" (click)="saveActionFromModal()">Save Action</button>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #notFound>
+  <p>Inspection not found.</p>
+  <a class="btn" routerLink="/inspections/start">Start a new inspection</a>
+
+</ng-template>

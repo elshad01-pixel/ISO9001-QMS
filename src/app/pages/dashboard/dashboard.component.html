@@ -1,0 +1,127 @@
+<div class="dashboard-content">
+  <div class="welcome-section">
+    <div>
+      <h1 class="welcome-title">Welcome back, {{ displayName }}! 👋</h1>
+      <p class="welcome-subtitle">Here's an overview of your inspection management system</p>
+    </div>
+    <div class="date-info">
+      <span>📅</span>
+      <span>{{ currentDateFormatted }}</span>
+    </div>
+  </div>
+
+  <div class="quick-actions">
+    <a routerLink="/inspections/start" class="quick-btn primary">
+      <span>➕</span>
+      <span>New Inspection</span>
+    </a>
+    <a routerLink="/planning" class="quick-btn secondary">
+      <span>📍</span>
+      <span>Add Site</span>
+    </a>
+    <a routerLink="/reports" class="quick-btn secondary">
+      <span>📈</span>
+      <span>Generate Report</span>
+    </a>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon primary">📝</div>
+      <div class="stat-details">
+        <h3>{{ totalInspections | number }}</h3>
+        <p>Total Inspections</p>
+        <div class="stat-trend">
+          <span>On record</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon success">✅</div>
+      <div class="stat-details">
+        <h3>{{ completedInspections | number }}</h3>
+        <p>Completed</p>
+        <div class="stat-trend">
+          <span>{{ (totalInspections ? (completedInspections / totalInspections * 100) : 0) | number:'1.0-0' }}% completion rate</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon warning">⏳</div>
+      <div class="stat-details">
+        <h3>{{ pendingInspections | number }}</h3>
+        <p>Pending</p>
+        <div class="stat-trend pending">
+          <span>Awaiting submission</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon info">🛠️</div>
+      <div class="stat-details">
+        <h3>{{ openActionsCount | number }}</h3>
+        <p>Open Actions</p>
+        <div class="stat-trend pending">
+          <span>{{ overdueActions }} overdue</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <div class="content-card">
+      <div class="card-header">
+        <h2 class="card-title">📝 Recent Inspections</h2>
+        <a routerLink="/reports" class="view-all">View All</a>
+      </div>
+      <div class="card-content">
+        <div class="recent-item" *ngFor="let r of recentInspections">
+          <div class="item-icon" [ngClass]="{ 'completed': r.status==='completed', 'progress': r.status==='progress', 'urgent': r.status==='urgent' }">
+            <span>{{ r.status==='completed' ? '✅' : (r.status==='urgent' ? '⚠️' : '⏳') }}</span>
+          </div>
+          <div class="item-details">
+            <h4>{{ r.title }}</h4>
+            <p>{{ r.subtitle }}</p>
+            <div class="item-meta">
+              <span>👤 {{ r.inspector }}</span>
+              <span>📅 {{ r.dateLabel }}</span>
+            </div>
+          </div>
+          <div class="status-chip" [ngClass]="r.status">{{ r.chipText }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <div class="card-header">
+        <h2 class="card-title">🛠️ Actions Overview</h2>
+      </div>
+      <div class="card-content">
+        <div class="kpi-grid">
+          <div class="kpi"><div class="kpi-val warn">{{ openActionsCount }}</div><div class="kpi-label">Open Actions</div></div>
+          <div class="kpi"><div class="kpi-val danger">{{ overdueActions }}</div><div class="kpi-label">Overdue</div></div>
+          <div class="kpi"><div class="kpi-val">{{ totalActions }}</div><div class="kpi-label">Total Actions</div></div>
+          <div class="kpi"><div class="kpi-val success">{{ actionsCompletionRate }}%</div><div class="kpi-label">Completion Rate</div></div>
+        </div>
+
+        <div class="progress-bar">
+          <div class="progress" [style.width.%]="actionsCompletionRate"></div>
+        </div>
+
+        <h4 class="recent-actions-title">Recent Actions</h4>
+        <div class="actions-list">
+          <div class="action-row" *ngFor="let a of recentActions" [ngClass]="a.status">
+            <span class="icon">{{ a.status==='urgent' ? '⚠️' : (a.status==='completed' ? '✅' : '🛠️') }}</span>
+            <div class="text">
+              <div class="title">{{ a.title }}</div>
+              <div class="subtitle">{{ a.location }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

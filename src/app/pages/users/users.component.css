@@ -1,0 +1,8 @@
+.users-list {
+  list-style: none;
+  padding: 0;
+}
+
+table.table td, table.table th { vertical-align: middle; }
+
+.form-card { margin-bottom: 1rem; }
