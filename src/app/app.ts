@@ -16,15 +16,15 @@ export class App {
 
   protected readonly navigation = [
     { route: '/dashboard', icon: 'dashboard', label: 'Dashboard' },
-    { route: '/documents', icon: 'description', label: 'Document Control' },
-    { route: '/risks', icon: 'warning', label: 'Risk Register' },
-    { route: '/nonconformities', icon: 'rule', label: 'Nonconformity & CAPA' },
+    { route: '/documents', icon: 'description', label: 'Documents' },
+    { route: '/risks', icon: 'warning', label: 'Risks' },
+    { route: '/nonconformities', icon: 'rule', label: 'Nonconformities / CAPA' },
     { route: '/audits', icon: 'fact_check', label: 'Internal Audits' },
-    { route: '/management-reviews', icon: 'groups', label: 'Management Reviews' },
-    { route: '/training', icon: 'school', label: 'Training Matrix' },
-    { route: '/kpis', icon: 'monitoring', label: 'KPI Dashboard' },
+    { route: '/management-reviews', icon: 'groups', label: 'Management Review' },
+    { route: '/kpis', icon: 'monitoring', label: 'KPIs' },
+    { route: '/training', icon: 'school', label: 'Training' },
     { route: '/reports', icon: 'bar_chart', label: 'Reports' },
-    { route: '/users', icon: 'people', label: 'User Management' },
+    { route: '/users', icon: 'people', label: 'Users' },
     { route: '/settings', icon: 'settings', label: 'Settings' },
   ];
 
