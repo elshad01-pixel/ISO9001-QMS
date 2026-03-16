@@ -5,7 +5,7 @@
         <div class="brand-mark">Q</div>
         <div class="brand-text">
           <strong class="brand">{{ title() }}</strong>
-          <span class="muted small">Multi-tenant SaaS</span>
+          <span class="muted small">ISO 9001 SaaS</span>
         </div>
         <button type="button" class="pin-btn" [class.active]="sidebarPinned()" (click)="toggleSidebarPin()">📌</button>
       </div>
@@ -34,7 +34,7 @@
         <div class="top-title">{{ pageTitle() }}</div>
         <div class="muted small">ISO 9001:2015 Quality Management Platform</div>
       </div>
-      <button mat-flat-button color="primary" routerLink="/documents">New Record</button>
+      <button mat-flat-button color="primary" [routerLink]="'/documents'">New Record</button>
     </header>
 
     <section class="content">
